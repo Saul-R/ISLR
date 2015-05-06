@@ -50,4 +50,5 @@ summary(lm.fit1)
 lm.fit1<-update(lm.fit,medv~.-age)
 
 
-#INTERACTION TERMS 
+#INTERACTION TERMS
+
