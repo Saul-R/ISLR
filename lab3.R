@@ -1,3 +1,4 @@
+#0-Packages
 library(MASS)
 library(ISLR)
 str(Boston)
@@ -49,6 +50,35 @@ lm.fit1<-lm(medv~.-age,data=Boston)
 summary(lm.fit1)
 lm.fit1<-update(lm.fit,medv~.-age)
 
-
 #INTERACTION TERMS
+#use y~a:b for simple interaction (beta * (a*b))
+#Use y~a*b for full interaction(beta1*a + beta2*b + beta3*(a*b)) (y~a+b+a:b)
+summary(lm(medv~lstat*age,data=Boston))
 
+#NON LINEAR TRANSFORMATIONS OF THE PREDICTOR
+lm.fit2<-lm(medv~lstat+I(lstat^2),data=Boston)
+summary(lm.fit2)
+#Really low p val, higher R2 than in simple linear reg
+#Test the two models one vs the other
+anova(lm.fit,lm.fit2)
+#P val associated to lm.fit2 is better than lm.fit?
+lm.fit5<-lm(medv~poly(lstat,5))
+anova(lm.fit2,lm.fit5)
+summary(lm.fit5)
+summary(lm(medv~log(rm),data=Boston))
+
+
+##QUALITATIVE PREDICTORS.  
+#Data = Carseats. Exploring the data
+fix(Carseats)
+names(Carseats)
+pairs(Carseats)
+
+lm.fit<-lm(Sales~.+Income:Advertising+Price:Age,data=Carseats)
+summary(lm.fit)
+anova(lm(Sales~.,data=Carseats),lm.fit)
+contrasts(Carseats$ShelveLoc)
+#NOTE:High positive slope for ShelveLocGood (indicates the shelve is in good loc)
+#also positive for ShelveLocMedium, less slope (lower value)
+
+#WRITING FUNCTIONS 
