@@ -62,38 +62,94 @@ lm_q9<-lm(mpg~.-name,data=Auto)
 summary(lm_q9)
 ##Comment on the output. For instance:
 ##i. Is there a relationship between the predictors and the response?
+#F statistic (far from 1) shows that the predictor and the response are not
+#independent.
 ##ii. Which predictors appear to have a statistically significant
 ##relationship to the response?
+#Some of the predictors seem to be statistically significant enough
+#for the response to be dependent on them (weight,year & Origin, less significant,
+#but still enough is displacement)
 ##iii. What does the coefficient for the year variable suggest?
+#The higher the year, the higher the mpg, with the second greatest slope of the
+#predictors, meaning it has one of the biggest impact in mpg.
 ##(d) Use the plot() function to produce diagnostic plots of the linear
 ##regression fit. Comment on any problems you see with the fit.
 ##Do the residual plots suggest any unusually large outliers? Does
 ##the leverage plot identify any observations with unusually high
 ##leverage?
+par(mfrow = c(2,2))
+plot(lm_q9)
+#observation 14 have VERY inusual high leverage, (not high residual anyway)
+par(mfrow=c(1,1))
+plot(predict(lm_q9),rstudent(lm_q9))
+#Outliers over a value of rstudentized of > 3
+
 ##(e) Use the * and : symbols to fit linear regression models with
 ##interaction effects. Do any interactions appear to be statistically
 ##significant?
+sink("outputMLR.txt")
+summary(lm(mpg~(.-name)*(.-name),data=Auto))
+sink()
+#Most significant is acceleration:origin, displacement:year, acceleration:year.
+#These below seem to be also quite significant statistically
+#Cylinders:year, Cylinders:acceleration, horsepower:acceleration, year:origin 
+
 ##(f) Try a few different transformations of the variables, such as
 ##log(X), √X, X2. Comment on your findings.  
-##3.7 Exercises 123
+pairs(Auto)
+#some of the responses seem to have a radical form (exponent between 0 and 1)
+# for example displacement,horsepower, and weight, compared to mpg
+plot(mpg~horsepower, data=Auto)
+summary(lm(mpg~horsepower),data=Auto)
+plot(mpg~I(horsepower^(1/4)), data=Auto)
+summary(lm(mpg~I(horsepower^(1/4))))
+#We can see in the second example, the linear model explains more variance than
+#the first one, (adjusted R-Squared)  0.6049 vs 0.657
+####INTERESTING TODO: Create a function that calculates the optimal power for this model
+####not very afraid of overfit, but it can happen (be careful)
 
 ##10. This question should be answered using the Carseats data set.
+library(ISLR)
 ##(a) Fit a multiple regression model to predict Sales using Price,
 ##Urban, and US.
+pairs(Carseats[,c("Sales","Price","Urban","US")])
+lm_q10<-lm(Sales~Price+Urban+US,data=Carseats)
+summary(lm_q10)
 ##(b) Provide an interpretation of each coefficient in the model. Be
 ##careful—some of the variables in the model are qualitative!
+#The Price seem to be related with Sales, for each unit increase in Price there is
+#a 0.054 units decrease in sales. Sales seem to be independent from the Urban
+#predictor, with a VERY high p-value (meaning the value for Urban yes is likely
+#to happen by chance)
+#The Predictor for USYes indicates that there is a increase in 1.2 units in sales
+#when the Value for this qualitative variable is Yes.
+#The bad news is the R-squared value, under 0.25
 ##(c) Write out the model in equation form, being careful to handle
 ##the qualitative variables properly.
+#ý<-13.04+Price*(-0.05)+(Urban="Yes")*(-0.02)+(US="Yes")*(1.20)
+
 ##(d) For which of the predictors can you reject the null hypothesis
 ##H0 : βj = 0?
+#Just for Urban, as commented before.
 ##(e) On the basis of your response to the previous question, fit a
 ##smaller model that only uses the predictors for which there is
 ##evidence of association with the outcome.
+lm_q10.2<-lm(Sales~Price+US,data=Carseats)
+summary(lm_q10.2)
 ##(f) How well do the models in (a) and (e) fit the data?
+anova(lm_q10,lm_q10.2)
+#R squared is around 0.23, meaning that less than 1 third of the varianze is
+#explained by the model.
+
 ##(g) Using the model from (e), obtain 95% confidence intervals for
 ##the coefficient(s).
+confint(lm_q10.2,level=0.95)
+
 ##(h) Is there evidence of outliers or high leverage observations in the
 ##model from (e)?
+par(mfrow=c(2,2))
+plot(lm_q10.2)
+par(mfrow=c(1,1))
 
 ##11. In this problem we will investigate the t-statistic for the null hypothesis
 ##H0 : β = 0 in simple linear regression without an intercept. To
