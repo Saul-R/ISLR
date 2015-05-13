@@ -1,0 +1,67 @@
+
+Call:
+lm(formula = mpg ~ displacement:weight, data = Auto)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-11.5066  -3.3499  -0.6626   2.7207  17.4808 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(>|t|)    
+(Intercept)          3.126e+01  3.879e-01   80.59   <2e-16 ***
+displacement:weight -1.182e-05  4.600e-07  -25.69   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.763 on 390 degrees of freedom
+Multiple R-squared:  0.6285,	Adjusted R-squared:  0.6276 
+F-statistic: 659.8 on 1 and 390 DF,  p-value: < 2.2e-16
+
+
+Call:
+lm(formula = mpg ~ displacement:weight, data = Auto)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-11.5066  -3.3499  -0.6626   2.7207  17.4808 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(>|t|)    
+(Intercept)          3.126e+01  3.879e-01   80.59   <2e-16 ***
+displacement:weight -1.182e-05  4.600e-07  -25.69   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.763 on 390 degrees of freedom
+Multiple R-squared:  0.6285,	Adjusted R-squared:  0.6276 
+F-statistic: 659.8 on 1 and 390 DF,  p-value: < 2.2e-16
+
+[1] "a"
+
+Call:
+lm(formula = mpg ~ horsepower, data = Auto)
+
+Coefficients:
+(Intercept)   horsepower  
+    39.9359      -0.1578  
+
+ 3.342e-03  -1.041  0.29853   
+displacement:year          5.934e-03  2.391e-03   2.482  0.01352 * 
+displacement:origin        2.398e-02  1.947e-02   1.232  0.21875   
+horsepower:weight         -1.968e-05  2.924e-05  -0.673  0.50124   
+horsepower:acceleration   -7.213e-03  3.719e-03  -1.939  0.05325 . 
+horsepower:year           -5.838e-03  3.938e-03  -1.482  0.13916   
+horsepower:origin          2.233e-03  2.930e-02   0.076  0.93931   
+weight:acceleration        2.346e-04  2.289e-04   1.025  0.30596   
+weight:year               -2.245e-04  2.127e-04  -1.056  0.29182   
+weight:origin             -5.789e-04  1.591e-03  -0.364  0.71623   
+acceleration:year          5.562e-02  2.558e-02   2.174  0.03033 * 
+acceleration:origin        4.583e-01  1.567e-01   2.926  0.00365 **
+year:origin                1.393e-01  7.399e-02   1.882  0.06062 . 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.695 on 363 degrees of freedom
+Multiple R-squared:  0.8893,	Adjusted R-squared:  0.8808 
+F-statistic: 104.2 on 28 and 363 DF,  p-value: < 2.2e-16
+
