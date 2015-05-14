@@ -154,21 +154,28 @@ par(mfrow=c(1,1))
 ##11. In this problem we will investigate the t-statistic for the null hypothesis
 ##H0 : β = 0 in simple linear regression without an intercept. To
 ##begin, we generate a predictor x and a response y as follows.
-##> set.seed (1)
-##> x=rnorm (100)
-##> y=2*x+rnorm (100)
+ set.seed (1)
+ x=rnorm (100)
+ y=2*x+rnorm (100)
 ##(a) Perform a simple linear regression of y onto x, without an intercept.
 ##Report the coefficient estimate ˆβ, the standard error of
 ##this coefficient estimate, and the t-statistic and p-value associated
 ##with the null hypothesis H0 : β = 0. Comment on these
 ##results. (You can perform regression without an intercept using
 ##the command lm(y∼x+0).)
+lm_q11<-lm(y~x+0)
+#the slope is almost perfect, we gave a slope of 2 (plus noise) and we're getting 1.994
+summary(lm_q11)
 ##(b) Now perform a simple linear regression of x onto y without an
 ##intercept, and report the coefficient estimate, its standard error,
 ##and the corresponding t-statistic and p-values associated with
-##the null hypothesis H0 : β = 0. Comment on these results.
+##the null hypothesis H0 : β = 0. Comment on these results
+summary(lm(x~y+0))
+#same t and p values
 ##(c) What is the relationship between the results obtained in (a) and
 ##(b)?
+#The're basically the same regression (rotated 90º)
+#
 ##(d) For the regression of Y onto X without an intercept, the tstatistic
 ##for H0 : β = 0 takes the form ˆβ/SE( ˆ β), where ˆ β is
 ##given by (3.38), and where
@@ -203,7 +210,8 @@ par(mfrow=c(1,1))
 ##(f) In R, show that when regression is performed with an intercept,
 ##the t-statistic for H0 : β1 = 0 is the same for the regression of y
 ##onto x as it is for the regression of x onto y.
-
+summary(lm(x~y))
+summary(lm(y~x))
 ##12. This problem involves simple linear regression without an intercept.
 ##(a) Recall that the coefficient estimate ˆ β for the linear regression of
 ##Y onto X without an intercept is given by (3.38). Under what
