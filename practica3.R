@@ -150,13 +150,18 @@ confint(lm_q10.2,level=0.95)
 par(mfrow=c(2,2))
 plot(lm_q10.2)
 par(mfrow=c(1,1))
+#one or two outliers
+plot(predict(lm_q10.2),rstudent(lm_q10.2))
+#no outliers
 
 ##11. In this problem we will investigate the t-statistic for the null hypothesis
 ##H0 : β = 0 in simple linear regression without an intercept. To
 ##begin, we generate a predictor x and a response y as follows.
-##> set.seed (1)
-##> x=rnorm (100)
-##> y=2*x+rnorm (100)
+set.seed (1)
+ x=rnorm (100)
+ y=2*x+rnorm (100)
+
+
 ##(a) Perform a simple linear regression of y onto x, without an intercept.
 ##Report the coefficient estimate ˆβ, the standard error of
 ##this coefficient estimate, and the t-statistic and p-value associated
