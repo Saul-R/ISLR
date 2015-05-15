@@ -1,0 +1,17 @@
+{
+    "contents" : "Linkedin Resume\n\n\nDesde el principio de mi vida académica me he sentido atraído por la programación y las matemáticas. En mi época universitaria descubrí la fusión más interesante de estas dos disciplinas: el Análisis de Datos; al que he dedicado la mayor parte de mi formación.\n\nConsidero muy importante el estudio contínuo, sobre todo en mi especialidad. Últimamente estoy \"enganchado\" a los MOOC (sobre todo Coursera) a los que dedico tiempo diaramente.\n\nHe pasado los últimos dos años trabajando en Londres como Analista de Datos mientras terminaba mi máster en minería de datos. Sigo actualmente formándome en técnicas de data science y estoy involucrado en proyectos de ingeniería de software con otros compañeros ingenieros.\n\nSiempre fuí defensor de Matlab, pero cuento con experiencia en Java/Javascript y otros lenguajes de programación (algo de C, VBA y también Pascal). De todas formas, ahora mismo me siento más inclinado hacia R y estoy aprendiendo Python (y a tocar el banjo).",
+    "created" : 1431703144500.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3032367101",
+    "id" : "C8692617",
+    "lastKnownWriteTime" : 1431703169,
+    "path" : "~/R Projects/ISLR/Linkedin Resume",
+    "project_path" : "Linkedin Resume",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "text"
+}
