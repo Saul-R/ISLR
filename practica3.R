@@ -262,52 +262,94 @@ eps<-rnorm(100,0,sqrt(0.25))
 ##and β1 in this linear model?
 y<--1+(0.5*x)+eps
 length(y)
+#β0=-1; β1=0.5
+##(d) Create a scatterplot displaying the relationship between x and
+##y. Comment on what you observe.
+plot(x,y)
+#clear linear relationship
+##(e) Fit a least squares linear model to predict y using x. Comment
+##on the model obtained. How do ˆ β0 and ˆ β1 compare to β0 and
+##β1?
 lm_q13<-lm(y~x)
 summary(lm_q13)
 #-0.998, 0.48
 #quite approx.
-##(d) Create a scatterplot displaying the relationship between x and
-##y. Comment on what you observe.
-##(e) Fit a least squares linear model to predict y using x. Comment
-##on the model obtained. How do ˆ β0 and ˆ β1 compare to β0 and
-##β1?
 ##(f) Display the least squares line on the scatterplot obtained in (d).
 ##Draw the population regression line on the plot, in a different
 ##color. Use the legend() command to create an appropriate legend.
+plot(x,y)
+abline(lm_q13,col=2,lw=1)
+abline(-1,0.5,lwd=1,col=3)
+legend(-1,legend=c("model fit","pop. regression"),col=2:3,lwd=3)
 ##(g) Now fit a polynomial regression model that predicts y using x
 ##and x2. Is there evidence that the quadratic term improves the
 ##model fit? Explain your answer.
+lm_q13.2<-lm(y~x+I(x^2))
+summary(lm_q13.2)
+summary(lm_q13)
+#minimal improve in training, probably it will be worse in test, since we know
+#the points follow a linear distribution. Not statistically significant enough for
+#x^2 as predictor
+
 ##(h) Repeat (a)–(f) after modifying the data generation process in
 ##such a way that there is less noise in the data. The model (3.39)
 ##should remain the same. You can do this by decreasing the variance
 ##of the normal distribution used to generate the error term
 ## in (b). Describe your results.
+set.seed(1)
+eps2<-rnorm(100,0,sqrt(0.1))
+y2<--1+(0.5*x)+eps2
+lm_q13.3<-lm(y2~x)
+summary(lm_q13.3)
+plot(x,y2)
+abline(lm_q13.3,col="red",lw=3)
+summary(lm_q13)
+#Surprisingly R squared is higher for the case with more noise
+
 ##(i) Repeat (a)–(f) after modifying the data generation process in
 ##such a way that there is more noise in the data. The model
 ##(3.39) should remain the same. You can do this by increasing
 ##the variance of the normal distribution used to generate the
 ##error term  in (b). Describe your results.
+
+set.seed(1)
+eps3<-rnorm(100,0,sqrt(0.5))
+y3<--1+(0.5*x)+eps3
+lm_q13.4<-lm(y3~x)
+summary(lm_q13.4)
+plot(x,y2)
+abline(lm_q13.4,col="red",lw=3)
+#Much lower R squared value (less variance explained). Stronger Null hypothesis
+# (still far from one F-statistic and close to 0 p-value)
+
 ##(j) What are the confidence intervals for β0 and β1 based on the
 ##original data set, the noisier data set, and the less noisy data
 ##set? Comment on your results.
+confint(lm_q13)
+confint(lm_q13.3)
+confint(lm_q13.4)
 
 ##14. This problem focuses on the collinearity problem.
 ##(a) Perform the following commands in R:
-##> set .seed (1)
-##> x1=runif (100)
-##> x2 =0.5* x1+rnorm (100) /10
-##> y=2+2* x1 +0.3* x2+rnorm (100)
+ set.seed (1)
+ x1=runif(100)
+ x2 =0.5*x1+rnorm(100)/10
+ y=2+2*x1+0.3*x2+rnorm(100)
 ##The last line corresponds to creating a linear model in which y is
 ##a function of x1 and x2. Write out the form of the linear model.
 ##What are the regression coefficients?
+#b0+b1*x1+b2*x2+eps=y
+#b0=2,b1=2,b2=0.3
 ##(b) What is the correlation between x1 and x2? Create a scatterplot
 ##displaying the relationship between the variables.
+plot(x1,x2)
+#linear relationship, quite strong
 ##(c) Using this data, fit a least squares regression to predict y using
 ##x1 and x2. Describe the results obtained. What are ˆ β0, ˆ β1, and
 ##ˆ β2? How do these relate to the true β0, β1, and β2? Can you
 ##reject the null hypothesis H0 : β1 = 0? How about the null
 ##hypothesis H0 : β2 = 0?
-##126 3. Linear Regression
+lm_q14<-lm()
 ##(d) Now fit a least squares regression to predict y using only x1.
 ##Comment on your results. Can you reject the null hypothesis
 ##H0 : β1 = 0?
