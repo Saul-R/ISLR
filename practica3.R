@@ -321,13 +321,13 @@ plot(x,y2)
 abline(lm_q13.4,col="red",lw=3)
 #Much lower R squared value (less variance explained). Stronger Null hypothesis
 # (still far from one F-statistic and close to 0 p-value)
+summary(lm_q13)
+summary(lm_q13.3)
+summary(lm_q13.4)
 
 ##(j) What are the confidence intervals for β0 and β1 based on the
 ##original data set, the noisier data set, and the less noisy data
 ##set? Comment on your results.
-confint(lm_q13)
-confint(lm_q13.3)
-confint(lm_q13.4)
 
 ##14. This problem focuses on the collinearity problem.
 ##(a) Perform the following commands in R:
@@ -349,36 +349,105 @@ plot(x1,x2)
 ##ˆ β2? How do these relate to the true β0, β1, and β2? Can you
 ##reject the null hypothesis H0 : β1 = 0? How about the null
 ##hypothesis H0 : β2 = 0?
-lm_q14<-lm()
+
+summary(lm(y~x1+x2))
+#Reject Null Hipothesis for b1 but no for b2
+#Intercept is quite close to real, B1 is not so far, but B2 is very inaccurate
+
 ##(d) Now fit a least squares regression to predict y using only x1.
 ##Comment on your results. Can you reject the null hypothesis
 ##H0 : β1 = 0?
+summary(lm(y~x1))
+#Stronger  p value, improvement on the model. Reject H0
 ##(e) Now fit a least squares regression to predict y using only x2.
 ##Comment on your results. Can you reject the null hypothesis
 ##H0 : β1 = 0?
+summary(lm(y~x2))
+#Reject H0. 
 ##(f) Do the results obtained in (c)–(e) contradict each other? Explain
 ##your answer.
+#since x1 and x2 are linearly dependent, both will give the same information
+# taking both will result in one of them being rejected, and taking each of
+#them separately will result in H0 to be rejected. If one predictor is relevant,
+# then the other will be relevant too
+
 ##(g) Now suppose we obtain one additional observation, which was
 ##unfortunately mismeasured.
-##> x1=c(x1 , 0.1)
-##> x2=c(x2 , 0.8)
-##> y=c(y,6)
+ x1g=c(x1 , 0.1)
+ x2g=c(x2 , 0.8)
+ yg=c(y,6)
 ##Re-fit the linear models from (c) to (e) using this new data. What
 ##effect does this new observation have on the each of the models?
 ##In each model, is this observation an outlier? A high-leverage
 ##point? Both? Explain your answers.
+par(mfrow=c(2,2))
+plot(lm(yg~x1g+x2g))
+#Really high leverage point
+plot(lm(yg~x1g))
+#A bit of an outlier
+plot(lm(yg~x2g))
+#High leverage
+# quite sure it will (as in the second model it's an outlier) shift the p-val
+# in the model with both x1 x2, from x1 to x2 to become statistically significant
 
 ##15. This problem involves the Boston data set, which we saw in the lab
 ##for this chapter. We will now try to predict per capita crime rate
 ##using the other variables in this data set. In other words, per capita
 ##crime rate is the response, and the other variables are the predictors.
+library(MASS)
 ##(a) For each predictor, fit a simple linear regression model to predict
 ##the response. Describe your results. In which of the models is
 ##there a statistically significant association between the predictor
 ##and the response? Create some plots to back up your assertions.
+summary(Boston)
+str(Boston)
+#LOOP NOT WORKING
+# myLoop <- function(){
+#   output<-vector()
+#   for (i in 2:14){
+#     output<-c(output,summary(lm(Boston$crim~Boston[,i])))
+#     #  names(Boston)[i]
+#   }
+#   output
+# }
+
+attach(Boston)
+lm.zn = lm(crim~zn)
+summary(lm.zn) # yes
+lm.indus = lm(crim~indus)
+summary(lm.indus) # yes
+lm.chas = lm(crim~chas) 
+summary(lm.chas) # no
+lm.nox = lm(crim~nox)
+summary(lm.nox) # yes
+lm.rm = lm(crim~rm)
+summary(lm.rm) # yes
+lm.age = lm(crim~age)
+summary(lm.age) # yes
+lm.dis = lm(crim~dis)
+summary(lm.dis) # yes
+lm.rad = lm(crim~rad)
+summary(lm.rad) # yes
+lm.tax = lm(crim~tax)
+summary(lm.tax) # yes
+lm.ptratio = lm(crim~ptratio)
+summary(lm.ptratio) # yes
+lm.black = lm(crim~black)
+summary(lm.black) # yes
+lm.lstat = lm(crim~lstat)
+summary(lm.lstat) # yes
+lm.medv = lm(crim~medv)
+summary(lm.medv) # yes
+
+
 ##(b) Fit a multiple regression model to predict the response using
 ##all of the predictors. Describe your results. For which predictors
 ##can we reject the null hypothesis H0 : βj = 0?
+
+lm.all<-lm(crim~.,data=Boston)
+summary(lm.all)
+#zn, dis, rad, black, medv...¿nox & lstat?
+
 ##(c) How do your results from (a) compare to your results from (b)?
 ##Create a plot displaying the univariate regression coefficients
 ##from (a) on the x-axis, and the multiple regression coefficients
@@ -386,7 +455,106 @@ lm_q14<-lm()
 ##single point in the plot. Its coefficient in a simple linear regression
 ##model is shown on the x-axis, and its coefficient estimate
 ##in the multiple linear regression model is shown on the y-axis.
+
+a<-summary(lm.zn)
+summary(lm.zn)$coeffic[2,1]
+coefficients(lm.zn)[2]
+
+x<-c(coef(lm.zn)[2],
+     coef(lm.indus)[2],
+     coef(lm.chas)[2],
+     coef(lm.nox)[2],
+     coef(lm.rm)[2],
+     coef(lm.age)[2],
+     coef(lm.dis)[2],
+     coef(lm.rad)[2],
+     coef(lm.tax)[2],
+     coef(lm.ptratio)[2],
+     coef(lm.black)[2],
+     coef(lm.lstat)[2],
+     coef(lm.medv)[2])
+
+y<-coef(lm.all)[2:14]
+par(mfrow=c(1,2))
+plot(y~x,type="n")
+text(x,y,names(x))
+plot(y[-4]~x[-4],type="n")
+text(x,y,names(x))
+#clear outlier in nox (30 univariate, -10 multivar.)
+#ptratio is also quite different from one regression to another
+differences<-sqrt(abs((x-y)^2/y))
+differences
+#RSE's
+rseUniv<-c(summary(lm.zn)$sigma,
+    summary(lm.indus)$sigma,
+    summary(lm.chas)$sigma,
+    summary(lm.nox)$sigma,
+    summary(lm.rm)$sigma,
+    summary(lm.age)$sigma,
+    summary(lm.dis)$sigma,
+    summary(lm.rad)$sigma,
+    summary(lm.tax)$sigma,
+    summary(lm.ptratio)$sigma,
+    summary(lm.black)$sigma,
+    summary(lm.lstat)$sigma,
+    summary(lm.medv)$sigma)
+
+s.all<-summary(lm.all)
+
 ##(d) Is there evidence of non-linear association between any of the
 ##predictors and the response? To answer this question, for each
 ##predictor X, fit a model of the form
 ##Y = β0 + β1X + β2X2 + β3X3 + .
+
+attach(Boston)
+lmpoly.zn = lm(crim~poly(zn,3))
+summary(lmpoly.zn) 
+lmpoly.indus = lm(crim~poly(indus,3))
+summary(lmpoly.indus) 
+#lmpoly.chas = lm(crim~poly(chas,3)) 
+#summary(lmpoly.chas) 
+lmpoly.nox = lm(crim~poly(nox,3))
+summary(lmpoly.nox) 
+lmpoly.rm = lm(crim~poly(rm,3))
+summary(lmpoly.rm) 
+lmpoly.age = lm(crim~poly(age,3))
+summary(lmpoly.age) 
+lmpoly.dis = lm(crim~poly(dis,3))
+summary(lmpoly.dis) 
+lmpoly.rad = lm(crim~poly(rad,3))
+summary(lmpoly.rad) 
+lmpoly.tax = lm(crim~poly(tax,3))
+summary(lmpoly.tax) 
+lmpoly.ptratio = lm(crim~poly(ptratio,3))
+summary(lmpoly.ptratio) 
+lmpoly.black = lm(crim~poly(black,3))
+summary(lmpoly.black) 
+lmpoly.lstat = lm(crim~poly(lstat,3))
+summary(lmpoly.lstat) 
+lmpoly.medv = lm(crim~poly(medv,3))
+summary(lmpoly.medv) 
+
+rsePoly<-c(summary(lmpoly.zn)$sigma,
+           summary(lmpoly.indus)$sigma,
+           summary(lm.chas)$sigma,#this one is excluded, (set to equal RSE)
+           summary(lmpoly.nox)$sigma,
+           summary(lmpoly.rm)$sigma,
+           summary(lmpoly.age)$sigma,
+           summary(lmpoly.dis)$sigma,
+           summary(lmpoly.rad)$sigma,
+           summary(lmpoly.tax)$sigma,
+           summary(lmpoly.ptratio)$sigma,
+           summary(lmpoly.black)$sigma,
+           summary(lmpoly.lstat)$sigma,
+           summary(lmpoly.medv)$sigma)
+par(mfrow=c(2,2))
+plot(rsePoly~rseUniv,type="n")
+text(rseUniv,rsePoly,names(x))
+abline(0,1)
+#much higher rse for the univariate model in the medv case (non linear)
+plot(crim~medv)
+#indus,dis and nox are also quite far from
+plot(crim~dis)
+lines(sort(dis), fitted(lmpoly.dis)[order(dis)], col='red', type='b') 
+plot(crim~nox)
+lines(sort(nox), fitted(lmpoly.nox)[order(nox)], col='red', type='b') 
