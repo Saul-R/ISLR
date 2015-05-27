@@ -1,0 +1,23 @@
+---
+title: "Lab 4"
+output: pdf_document
+---
+Logistic Regression, LDA, QDA & KNN
+--------------------------------
+###Stock market data.
+Begin with some data exploration.
+```{r}
+library(ISLR)
+names(Smarket)
+dim(Smarket)
+summary(Smarket)
+```
+The class to predict is clearly `Direction`. Doing some visualizations...
+
+```{r}
+library(ggplot2)
+l1vsl2<-ggplot(data = Smarket,aes(x=Lag1,y=Lag2,size=Volume,col=Direction)) + geom_jitter(alpha=0.4)+theme_classic()+ggtitle("Movements from one day before to 2 days before")
+
+l1vsl2
+```
+
