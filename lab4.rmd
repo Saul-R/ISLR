@@ -1,6 +1,6 @@
 ---
 title: "Lab 4"
-output: pdf_document
+output: html_document
 ---
 Logistic Regression, LDA, QDA & KNN
 --------------------------------
@@ -16,8 +16,36 @@ The class to predict is clearly `Direction`. Doing some visualizations...
 
 ```{r}
 library(ggplot2)
-l1vsl2<-ggplot(data = Smarket,aes(x=Lag1,y=Lag2,size=Volume,col=Direction)) + geom_jitter(alpha=0.4)+theme_classic()+ggtitle("Movements from one day before to 2 days before")
-
+l1vsl2 <- ggplot(data = Smarket, aes(x=Lag1,y=Lag2,size=Volume,col=Direction)) +
+  geom_jitter(alpha=0.4)+theme_classic() + 
+  ggtitle("Movements from one day before to 2 days before")
 l1vsl2
 ```
+
+We see the data is not very correlated (try for all) it'll be hard to make an accurate classifier from this. Let's look at the correlation (ignoring the column with non numerical values)
+
+```{r}
+cor(Smarket[,-9])
+```
+
+Only Year/Volume seem to have a decent correlation level.
+```{r echo=FALSE, results='hide',message=FALSE}
+year.volume.plot <- ggplot(data = Smarket, aes(x = factor(Year), y = Volume)) +
+  geom_violin(aes(fill = Year)) +
+  geom_jitter(alpha = 0.6, aes(col = Direction)) +
+  ggtitle("Volume per year") +
+  ylab("Year") +
+  theme_classic()
+year.volume.plot
+
+year.volume.boxplot <- ggplot(data = Smarket, aes(x = factor(Year), y = Volume)) +
+  geom_boxplot() +
+  theme_classic() +
+  ggtitle("Simpler Year vs Volume") +
+  ylab("Year")
+year.volume.boxplot
+
+```
+
+
 
