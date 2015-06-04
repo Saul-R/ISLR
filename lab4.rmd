@@ -47,5 +47,96 @@ year.volume.boxplot
 
 ```
 
+Volume seems to be increasing a bit each year, but in my opinion is just 2005 the only one that clearly shows a difference with the rest (2002-2004) seem to be the same. 
+
+###Logistic regression
+
+Let's fit a logistic model to predict Volume using `Lag1` to `Lag5` and `Volume`.
+```{r}
+require(ISLR)
+log.reg <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume,
+               data = Smarket,
+               family = binomial)
+summary(log.reg)
+coef(log.reg)
+pred.log.reg <- predict(log.reg)
+contrasts(Smarket$Direction)
+pred2.log.reg <- predict(log.reg, type = "response")
+head(pred2.log.reg)
+
+
+```
+
+
+
+Create training with Smarket before 2005 to build train and test set
+
+```{r}
+test.condition <- (Smarket$Year == 2005)
+training.set <- Smarket[!test.condition,]
+test.set <- Smarket[test.condition,]
+```
+
+Perform a logistic regression on the training set (data before 2015) and then use the test set to evaluate the error rate.
+
+```{r}
+
+log.reg <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume,
+               data = training.set,
+               family = binomial)
+test.output.prob <- predict(log.reg, newdata = test.set, type = "response")
+test.output.logic <- (as.numeric(test.output.prob) > 0.5)
+
+```
+
+Create the confusion matrix and check the number of errors 1 & 2, and then the overall error rate.
+
+
+```{r}
+confusion.matrix <- table(test.output.logic,test.set$Direction)
+rownames(confusion.matrix) <- c("Down (pred)", "Up (pred)")
+error.type1 <- confusion.matrix["Up (pred)","Down"]     # Guilt an innoccent / False positives
+error.type2 <- confusion.matrix["Down (pred)","Up"]     # Release a guilty / False negatives
+error.rate <- (error.type1 + error.type2) / length(test.output.logic)
+
+error.rate
+
+```
+
+This could be done in a more compact way as:
+
+```{r}
+mean((test.set$Direction == "Up") == test.output.logic)
+```
+
+This would mean that more that almost 52% of the data was predicted in a wrong way (worse than random guessing (50%)).
+
+We'll now try using a model including only predictors with the lowest p-values (as it simplifies the model (less variance) and it doesn't make the bias grow (the other predictors don't give much information about the output). Let's remember the p-values for each of the predictors.
+
+```{r}
+summary(log.reg)
+```
+
+As we can see here, there's only 2 predictors worth using, and they still have very high p-values. Those two are `Lag1` and `Lag2`.
+
+Let's build the model based on those two:
+
+```{r}
+log.reg2 <- glm(Direction ~ Lag1 + Lag2,
+                data = training.set,
+                family = binomial)
+summary(log.reg2)
+```
+
+And now we'll check the error rate for the new model:
+
+```{r}
+mean((test.set$Direction == "Up") == (predict(log.reg2,
+                                              test.set,
+                                              type = "response") > 0.5))
+
+```
+
+We'd now predicted 56% of the test set correctly, improving the model (still far from perfect with just a 6% better than random guess).
 
 
